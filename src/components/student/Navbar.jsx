@@ -1,10 +1,17 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
-import { FaChalkboardTeacher, FaBookOpen, FaUserPlus } from "react-icons/fa";
+import {
+  FaChalkboardTeacher,
+  FaBookOpen,
+  FaUserPlus,
+  FaTachometerAlt,
+} from "react-icons/fa";
 import { HiMenuAlt3 } from "react-icons/hi";
 import { IoClose } from "react-icons/io5";
 import { useClerk, UserButton, useUser } from "@clerk/clerk-react";
+import AuthContext from "../../context/AuthContext/AuthContext";
 const Navbar = () => {
+  const { isEducator } = useContext(AuthContext);
   const [isOpen, setIsOpen] = useState(false);
   const { openSignIn } = useClerk();
   const { user } = useUser();
@@ -15,7 +22,7 @@ const Navbar = () => {
           {/* Logo */}
           <div className="flex items-center">
             <Link to="/" className="text-2xl font-bold">
-              Code<span className="text-blue-400">Craft</span>
+              Up<span className="text-blue-400">Skill</span>
             </Link>
           </div>
 
@@ -24,11 +31,20 @@ const Navbar = () => {
             {user && (
               <>
                 <Link
-                  to="/instructor"
+                  to={"/instructor"}
                   className="flex items-center hover:text-blue-300 transition-colors"
                 >
-                  <FaChalkboardTeacher className="mr-2" />
-                  Become an Instructor
+                  {isEducator ? (
+                    <>
+                      <FaTachometerAlt className="mr-2"></FaTachometerAlt>
+                      Instructor Dashboard
+                    </>
+                  ) : (
+                    <>
+                      <FaChalkboardTeacher></FaChalkboardTeacher>
+                      Become an Instructor
+                    </>
+                  )}
                 </Link>
                 <Link
                   to="/my-enrollments"
@@ -44,7 +60,7 @@ const Navbar = () => {
             ) : (
               <Link
                 onClick={() => openSignIn()}
-                className="btn btn-primary bg-blue-500 hover:bg-blue-600 border-none text-white"
+                className="btn btn-primary rounded-3xl bg-blue-500 hover:bg-blue-600 border-none text-white"
               >
                 <FaUserPlus className="mr-2" />
                 Create Account
@@ -81,8 +97,17 @@ const Navbar = () => {
                   className="flex items-center hover:text-blue-300 transition-colors px-2 py-1"
                   onClick={() => setIsOpen(false)}
                 >
-                  <FaChalkboardTeacher className="mr-2" />
-                  Become an Instructor
+                  {isEducator ? (
+                    <>
+                      <FaTachometerAlt className="mr-2"></FaTachometerAlt>
+                      Instructor Dashboard
+                    </>
+                  ) : (
+                    <>
+                      <FaChalkboardTeacher></FaChalkboardTeacher>
+                      Become an Instructor
+                    </>
+                  )}
                 </Link>
                 <Link
                   to="/my-enrollments"
@@ -98,7 +123,7 @@ const Navbar = () => {
               <UserButton></UserButton>
             ) : (
               <Link
-                className="btn btn-primary bg-blue-500 hover:bg-blue-600 border-none text-white w-full justify-start"
+                className="btn btn-primary rounded-3xl bg-blue-500 hover:bg-blue-600 border-none text-white w-full justify-start"
                 onClick={() => {
                   setIsOpen(false); // Close mobile menu
                   openSignIn(); // Call sign-in function

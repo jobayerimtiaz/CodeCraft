@@ -4,6 +4,8 @@ import Instructor from "../pages/Instructor/Instructor";
 import Dashboard from "../pages/Instructor/Dashboard";
 import AddCourse from "../pages/Instructor/AddCourse";
 import MyEnrollments from "../pages/student/MyEnrollments";
+import CourseList from "../pages/student/CourseList";
+import CourseDetails from "../pages/student/CourseDetails";
 
 const router = createBrowserRouter([
   {
@@ -14,6 +16,22 @@ const router = createBrowserRouter([
       {
         path: "my-enrollments",
         element: <MyEnrollments></MyEnrollments>,
+      },
+      {
+        path: "course-list",
+        element: <CourseList></CourseList>,
+      },
+      {
+        path: "course-list/:input",
+        element: <CourseList></CourseList>,
+      },
+      {
+        path: "course-list/:course",
+        element: <CourseList></CourseList>,
+      },
+      {
+        path: "course/:id",
+        element: <CourseDetails></CourseDetails>,
       },
     ],
   },

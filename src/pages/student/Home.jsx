@@ -1,13 +1,19 @@
 import React from "react";
 import Navbar from "../../components/student/Navbar";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
+import Hero from "../../components/student/Hero";
+import HomeLayout from "./HomeLayout";
+import Footer from "../../components/student/Footer";
 
 const Home = () => {
+  const location = useLocation();
+  const isHomePage = location.pathname === "/";
   return (
-    <div>
+    <div className="bg-[#202E3B]">
       <Navbar></Navbar>
-      <h1>student home</h1>
+      {isHomePage && <HomeLayout></HomeLayout>}
       <Outlet></Outlet>
+      <Footer></Footer>
     </div>
   );
 };
