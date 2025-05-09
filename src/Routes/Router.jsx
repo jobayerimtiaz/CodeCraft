@@ -6,6 +6,9 @@ import AddCourse from "../pages/Instructor/AddCourse";
 import MyEnrollments from "../pages/student/MyEnrollments";
 import CourseList from "../pages/student/CourseList";
 import CourseDetails from "../pages/student/CourseDetails";
+import Player from "../pages/student/Player";
+import MyCourses from "../pages/Instructor/MyCourses";
+import StudentsEnrolled from "../pages/Instructor/StudentsEnrolled";
 
 const router = createBrowserRouter([
   {
@@ -33,6 +36,10 @@ const router = createBrowserRouter([
         path: "course/:id",
         element: <CourseDetails></CourseDetails>,
       },
+      {
+        path: "player/:CourseId",
+        element: <Player></Player>,
+      },
     ],
   },
   {
@@ -46,6 +53,14 @@ const router = createBrowserRouter([
       {
         path: "add-course",
         element: <AddCourse></AddCourse>,
+      },
+      {
+        path: "my-courses",
+        element: <MyCourses></MyCourses>,
+      },
+      {
+        path: "students",
+        element: <StudentsEnrolled></StudentsEnrolled>,
       },
     ],
   },
