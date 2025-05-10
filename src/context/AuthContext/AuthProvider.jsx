@@ -2,25 +2,20 @@ import React, { useEffect, useState } from "react";
 import AuthContext from "./AuthContext";
 import { dummyCourses } from "../../assets/assets";
 import humanizeDuration from "humanize-duration";
+import axios from "axios";
 const AuthProvider = ({ children }) => {
   const [allCourses, setAllCourses] = useState([]);
   const [isEducator, setIsEducator] = useState([]);
   const [enrolledCourses, setEnrolledCourses] = useState([]);
 
   const fetchAllCourses = async () => {
-    setAllCourses(dummyCourses);
+    try {
+      const response = await axios.get("http://localhost:5000/courses"); // Replace with your backend API endpoint
+      setAllCourses(response.data); // Assuming the API returns an array of courses
+    } catch (error) {
+      console.error("Error fetching courses:", error);
+    }
   };
-
-  // const calculateRating = (course) => {
-  //   if (course.rating.length === 0) {
-  //     return 0;
-  //   }
-  //   let totalRating = 0;
-  //   course.rating.forEach((rating) => {
-  //     totalRating += rating.rating;
-  //   });
-  //   return totalRating / course.rating.length;
-  // };
 
   //calculate course chapter time
   const calculateChapterTime = (chapter) => {

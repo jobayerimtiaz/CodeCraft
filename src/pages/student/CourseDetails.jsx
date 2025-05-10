@@ -1,31 +1,32 @@
 import React, { useContext, useEffect, useState } from "react";
-import AuthContext from "../../context/AuthContext/AuthContext";
-import Loading from "../../components/student/Loading";
 import { useParams, useNavigate } from "react-router-dom";
+import { useUser } from "@clerk/clerk-react";
+import Loading from "../../components/student/Loading";
 import { FaRegPlayCircle, FaCheckCircle } from "react-icons/fa";
 import { MdOutlineLock, MdOutlineStar, MdStarOutline } from "react-icons/md";
 import { AiOutlineClockCircle, AiOutlineShoppingCart } from "react-icons/ai";
 import { BsCameraVideo, BsBookmark, BsBookmarkFill } from "react-icons/bs";
 import { RiMoneyDollarCircleLine } from "react-icons/ri";
 import { toast } from "react-toastify";
+import AuthContext from "../../context/AuthContext/AuthContext";
+import Swal from "sweetalert2";
 
 const CourseDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { isSignedIn } = useUser();
   const [courseData, setCourseData] = useState(null);
   const [isBookmarked, setIsBookmarked] = useState(false);
-  const [rating, setRating] = useState(4); // Default rating
+  const [rating, setRating] = useState(4);
   const [hoverRating, setHoverRating] = useState(0);
-
+  console.log(setRating);
   const {
     allCourses,
     calculateChapterTime,
     calculateCourseDuration,
     calculateNoOfLectures,
-    user,
-    enrollCourse,
   } = useContext(AuthContext);
-
+  const { user } = useUser();
   const fetchCourseData = async () => {
     const findCourse = allCourses.find((course) => course._id === id);
     setCourseData(findCourse);
@@ -34,22 +35,6 @@ const CourseDetails = () => {
   useEffect(() => {
     fetchCourseData();
   }, [allCourses]);
-
-  const handleEnroll = async () => {
-    if (!user) {
-      toast.info("Please login to enroll in this course");
-      navigate("/login");
-      return;
-    }
-
-    try {
-      await enrollCourse(courseData._id);
-      toast.success("Successfully enrolled in the course!");
-      // You might want to redirect to the course player or refresh the data
-    } catch (error) {
-      toast.error(error.response?.data?.message || "Enrollment failed");
-    }
-  };
 
   const toggleBookmark = () => {
     setIsBookmarked(!isBookmarked);
@@ -64,6 +49,24 @@ const CourseDetails = () => {
     return (courseData.coursePrice * (1 - courseData.discount / 100)).toFixed(
       2
     );
+  };
+
+  const handleEnrollClick = () => {
+    if (!isSignedIn) {
+      // alert("Please sign in to enroll in this course");
+      // toast.info("Please sign in to enroll in this course");
+      Swal.fire("Please sign in to enroll in this course");
+      return;
+    }
+    navigate("/payment", { state: { course: courseData } });
+  };
+
+  const handleLectureClick = (lectureId) => {
+    if (user?.publicMetadata?.enrolledCourses?.includes(courseData._id)) {
+      navigate(`/learn/${courseData._id}/lecture/${lectureId}`);
+    } else {
+      toast.info("Please enroll to access this lecture");
+    }
   };
 
   if (!courseData) return <Loading />;
@@ -147,7 +150,9 @@ const CourseDetails = () => {
                 className="w-10 h-10 rounded-full object-cover"
               />
               <div>
-                <p className="font-semibold">Created by Imtiaz</p>
+                <p className="font-semibold">
+                  Created by {courseData.educator}
+                </p>
                 <p className="text-sm text-gray-400">Senior Developer</p>
               </div>
             </div>
@@ -190,7 +195,7 @@ const CourseDetails = () => {
                   )}
                 </div>
                 <button
-                  onClick={handleEnroll}
+                  onClick={handleEnrollClick}
                   className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-6 py-3 rounded-lg font-semibold flex items-center gap-2 transition-all transform hover:scale-105"
                 >
                   <AiOutlineShoppingCart />
@@ -222,7 +227,7 @@ const CourseDetails = () => {
               key={chapter.chapterId}
               className="bg-[#2A3B4D] p-5 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300"
             >
-              <div className="flex justify-between items-center mb-4 cursor-pointer">
+              <div className="flex justify-between items-center mb-4">
                 <h3 className="text-xl font-bold flex items-center gap-2">
                   <span className="text-blue-400">{chapter.chapterOrder}.</span>
                   {chapter.chapterTitle}
@@ -238,23 +243,19 @@ const CourseDetails = () => {
                 {chapter.chapterContent.map((lecture) => (
                   <li
                     key={lecture.lectureId}
-                    className="flex items-center justify-between bg-[#36495C] p-3 rounded-lg hover:bg-[#3e5267] transition-colors duration-200 cursor-pointer"
-                    onClick={() => {
-                      if (
-                        lecture.isPreviewFree ||
-                        user?.enrolledCourses?.includes(courseData._id)
-                      ) {
-                        // Navigate to lecture player
-                        navigate(
-                          `/learn/${courseData._id}/lecture/${lecture.lectureId}`
-                        );
-                      } else {
-                        toast.info("Please enroll to access this lecture");
-                      }
-                    }}
+                    className={`flex items-center justify-between p-3 rounded-lg transition-colors duration-200 ${
+                      user?.publicMetadata?.enrolledCourses?.includes(
+                        courseData._id
+                      )
+                        ? "bg-[#36495C] hover:bg-[#3e5267] cursor-pointer"
+                        : "bg-[#2d3a47] cursor-not-allowed"
+                    }`}
+                    onClick={() => handleLectureClick(lecture.lectureId)}
                   >
                     <div className="flex items-center gap-3">
-                      {lecture.isPreviewFree ? (
+                      {user?.publicMetadata?.enrolledCourses?.includes(
+                        courseData._id
+                      ) ? (
                         <FaRegPlayCircle className="text-green-400" />
                       ) : (
                         <MdOutlineLock className="text-red-400" />
@@ -262,11 +263,6 @@ const CourseDetails = () => {
                       <span>
                         {lecture.lectureOrder}. {lecture.lectureTitle}
                       </span>
-                      {lecture.isPreviewFree && (
-                        <span className="text-xs bg-blue-500 text-white px-2 py-1 rounded">
-                          Free Preview
-                        </span>
-                      )}
                     </div>
                     <div className="flex items-center gap-1 text-sm text-gray-300">
                       <AiOutlineClockCircle />{" "}

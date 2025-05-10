@@ -31,7 +31,7 @@ const Navbar = () => {
             {user && (
               <>
                 <Link
-                  to={"/instructor"}
+                  to={"/instructor/dashboard"}
                   className="flex items-center hover:text-blue-300 transition-colors"
                 >
                   {isEducator ? (

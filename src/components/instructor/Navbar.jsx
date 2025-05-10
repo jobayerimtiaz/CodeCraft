@@ -44,7 +44,7 @@ const InstructorNavbar = () => {
         <div className="flex justify-between items-center">
           {/* Logo */}
           <div className="flex items-center">
-            <Link to="/instructor" className="text-2xl font-bold">
+            <Link to="/" className="text-2xl font-bold">
               Up<span className="text-blue-400">Skill</span>
             </Link>
           </div>
@@ -72,7 +72,7 @@ const InstructorNavbar = () => {
             {/* User Profile */}
             {user && (
               <div className="flex items-center ml-4">
-                <UserButton afterSignOutUrl="/" />
+                <UserButton />
               </div>
             )}
           </div>
@@ -121,7 +121,7 @@ const InstructorNavbar = () => {
             {user && (
               <div className="pt-3 border-t border-[#36495C]">
                 <div className="flex items-center px-4 py-3">
-                  <UserButton afterSignOutUrl="/" />
+                  <UserButton />
                   <span className="ml-3 font-medium">{user.fullName}</span>
                 </div>
               </div>

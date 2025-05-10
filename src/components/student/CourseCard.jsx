@@ -26,7 +26,7 @@ const CourseCard = ({ course }) => {
         {/* Instructor */}
         <div className="flex items-center text-gray-600 text-sm mb-2">
           <FaUserAlt className="mr-1 text-gray-500" />
-          <span>{course.educator.name}</span>
+          <span>{course.educator}</span>
         </div>
 
         {/* Rating and Students */}

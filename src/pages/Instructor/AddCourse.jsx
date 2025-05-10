@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { FaUpload, FaPlus, FaTrash, FaSave } from "react-icons/fa";
-
+import { useUser } from "@clerk/clerk-react";
+import axios from "axios";
 const AddCourse = () => {
+  const { user } = useUser();
+
   const [courseData, setCourseData] = useState({
     courseTitle: "",
     courseDescription: "",
@@ -10,6 +13,7 @@ const AddCourse = () => {
     courseThumbnail: "",
     isPublished: false,
     courseContent: [],
+    educator: user?.fullName || "",
   });
 
   const [newChapter, setNewChapter] = useState({
@@ -25,6 +29,7 @@ const AddCourse = () => {
   });
 
   const [currentChapterIndex, setCurrentChapterIndex] = useState(null);
+  console.log(currentChapterIndex);
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -119,36 +124,47 @@ const AddCourse = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Course Data:", courseData);
-    // Here you would typically send the data to your backend
-    alert("Course submitted successfully!");
 
-    // Reset the form
-    setCourseData({
-      courseTitle: "",
-      courseDescription: "",
-      coursePrice: "",
-      discount: "",
-      courseThumbnail: "",
-      isPublished: false,
-      courseContent: [],
-    });
+    try {
+      // Replace with your backend API endpoint
+      const response = await axios.post(
+        "http://localhost:5000/courses",
+        courseData
+      );
 
-    setNewChapter({
-      chapterTitle: "",
-      chapterContent: [],
-    });
+      // Show success message
+      alert(response.data.message || "Course submitted successfully!");
 
-    setNewLecture({
-      lectureTitle: "",
-      lectureDuration: "",
-      lectureUrl: "",
-      isPreviewFree: false,
-    });
+      // Reset the form
+      setCourseData({
+        courseTitle: "",
+        courseDescription: "",
+        coursePrice: "",
+        discount: "",
+        courseThumbnail: "",
+        isPublished: false,
+        courseContent: [],
+      });
 
-    setCurrentChapterIndex(null);
+      setNewChapter({
+        chapterTitle: "",
+        chapterContent: [],
+      });
+
+      setNewLecture({
+        lectureTitle: "",
+        lectureDuration: "",
+        lectureUrl: "",
+        isPreviewFree: false,
+      });
+
+      setCurrentChapterIndex(null);
+    } catch (error) {
+      console.error("Error submitting course:", error);
+      alert("Failed to submit course. Please try again.");
+    }
   };
 
   return (

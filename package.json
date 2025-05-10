@@ -11,7 +11,10 @@
   },
   "dependencies": {
     "@clerk/clerk-react": "^5.30.0",
+    "@stripe/react-stripe-js": "^3.7.0",
+    "@stripe/stripe-js": "^7.3.0",
     "@tailwindcss/vite": "^4.1.4",
+    "axios": "^1.9.0",
     "daisyui": "^5.0.28",
     "humanize-duration": "^3.32.1",
     "localforage": "^1.10.0",
@@ -27,6 +30,8 @@
     "react-toastify": "^11.0.5",
     "react-youtube": "^10.1.0",
     "sort-by": "^1.2.0",
+    "sweetalert2": "^11.21.0",
+    "sweetalert2-react-content": "^5.1.0",
     "tailwindcss": "^4.1.4",
     "uniquid": "^1.1.4"
   },
