@@ -7,16 +7,16 @@ import ReactPlayer from "react-player";
 import Loading from "../../components/student/Loading";
 
 const Player = () => {
-  const { enrolledCourses } = useContext(AuthContext);
-  const { CourseId } = useParams();
+  const { allCourses } = useContext(AuthContext);
+  const { courseId } = useParams();
   const [courseData, setCourseData] = useState(null);
   const [currentLecture, setCurrentLecture] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const playerRef = useRef(null);
-
+  console.log(courseId);
   // Find the course data
   useEffect(() => {
-    const course = enrolledCourses.find((course) => course._id === CourseId);
+    const course = allCourses.find((course) => course._id === courseId);
     if (course) {
       setCourseData(course);
       // Set first lecture as default
@@ -27,7 +27,7 @@ const Player = () => {
         setCurrentLecture(course.courseContent[0].chapterContent[0]);
       }
     }
-  }, [CourseId, enrolledCourses]);
+  }, [courseId, allCourses]);
 
   const handleSeekTo = (minutes) => {
     if (playerRef.current) {

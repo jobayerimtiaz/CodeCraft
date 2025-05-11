@@ -16,7 +16,7 @@ const Search = ({ data }) => {
           value={input}
           type="text"
           placeholder="Search for courses, instructors, or topics..."
-          className="w-full py-3 pl-12 pr-6 rounded-lg border border-gray-300 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200 shadow-sm transition-all duration-200"
+          className="w-full py-3 pl-12 pr-6 rounded-lg border border-gray-300 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200 shadow-sm transition-all duration-200 text-white"
         />
         <FiSearch className="absolute left-4 text-gray-400 text-xl" />
         <button className="absolute right-2 bg-blue-500 hover:bg-blue-600 text-white py-1.5 px-4 rounded-md transition-colors duration-200">

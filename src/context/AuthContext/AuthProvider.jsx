@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import AuthContext from "./AuthContext";
-import { dummyCourses } from "../../assets/assets";
+
 import humanizeDuration from "humanize-duration";
 import axios from "axios";
 const AuthProvider = ({ children }) => {
@@ -10,7 +10,9 @@ const AuthProvider = ({ children }) => {
 
   const fetchAllCourses = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/courses"); // Replace with your backend API endpoint
+      const response = await axios.get(
+        "https://learnglove-server.vercel.app/courses"
+      ); // Replace with your backend API endpoint
       setAllCourses(response.data); // Assuming the API returns an array of courses
     } catch (error) {
       console.error("Error fetching courses:", error);
@@ -45,8 +47,19 @@ const AuthProvider = ({ children }) => {
     return totalLectures;
   };
 
+  // const fetchUserEnrolledCourses = async () => {
+  //   setEnrolledCourses(dummyCourses);
+  // };
+
   const fetchUserEnrolledCourses = async () => {
-    setEnrolledCourses(dummyCourses);
+    try {
+      const response = await axios.get(
+        "https://learnglove-server.vercel.app/enrollments"
+      ); // Replace with your backend API endpoint
+      setEnrolledCourses(response.data); // Assuming the API returns an array of enrollments
+    } catch (error) {
+      console.error("Error fetching enrolled courses:", error);
+    }
   };
 
   useEffect(() => {

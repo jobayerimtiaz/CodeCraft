@@ -1,12 +1,16 @@
 import React, { useContext } from "react";
 import AuthContext from "../../context/AuthContext/AuthContext";
-import { AiOutlineClockCircle } from "react-icons/ai";
-import { BsCameraVideo } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
-
+import { useUser } from "@clerk/clerk-react";
 const MyEnrollments = () => {
-  const { enrolledCourses, calculateCourseDuration } = useContext(AuthContext);
+  const { enrolledCourses } = useContext(AuthContext);
   const navigate = useNavigate();
+  const { user } = useUser();
+  const studentName = user?.fullName;
+
+  const filteredCourses = enrolledCourses.filter(
+    (course) => course.userName === studentName
+  );
 
   return (
     <div className="flex justify-center w-full bg-[#202E3B] min-h-screen text-white py-8">
@@ -15,13 +19,13 @@ const MyEnrollments = () => {
           My Enrolled Courses
         </h1>
 
-        {enrolledCourses.length === 0 ? (
+        {filteredCourses.length === 0 ? (
           <div className="bg-[#2A3B4D] rounded-lg p-8 text-center">
             <h2 className="text-xl font-medium mb-4">
               You haven't enrolled in any courses yet
             </h2>
             <button
-              onClick={() => navigate("/courses")}
+              onClick={() => navigate("/course-list")}
               className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
             >
               Browse Courses
@@ -39,32 +43,14 @@ const MyEnrollments = () => {
                     >
                       Course
                     </th>
-                    <th
-                      scope="col"
-                      className="px-3 py-3 text-left text-xs font-medium uppercase tracking-wider sm:px-6"
-                    >
-                      <div className="flex items-center">
-                        <AiOutlineClockCircle className="mr-1 hidden sm:block" />
-                        <span>Duration</span>
-                      </div>
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-3 py-3 text-left text-xs font-medium uppercase tracking-wider sm:px-6"
-                    >
-                      <div className="flex items-center">
-                        <BsCameraVideo className="mr-1 hidden sm:block" />
-                        <span>Lectures</span>
-                      </div>
-                    </th>
                   </tr>
                 </thead>
                 <tbody className="bg-[#2A3B4D] divide-y divide-[#36495C]">
-                  {enrolledCourses.map((course) => (
+                  {filteredCourses.map((course) => (
                     <tr
-                      key={course._id}
+                      key={course.courseId}
                       className="hover:bg-[#36495C] cursor-pointer transition-colors"
-                      onClick={() => navigate(`/player/${course._id}`)}
+                      onClick={() => navigate(`/player/${course.courseId}`)}
                     >
                       <td className="px-4 py-4 whitespace-nowrap sm:px-6">
                         <div className="flex items-center">
@@ -79,20 +65,8 @@ const MyEnrollments = () => {
                             <div className="text-sm font-medium line-clamp-1">
                               {course.courseTitle}
                             </div>
-                            <div className="text-xs sm:text-sm text-gray-400 line-clamp-1">
-                              Instructor: {course.educator?.name || "Unknown"}
-                            </div>
                           </div>
                         </div>
-                      </td>
-                      <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-300 sm:px-6">
-                        {calculateCourseDuration(course)}
-                      </td>
-                      <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-300 sm:px-6">
-                        {course.courseContent?.reduce(
-                          (acc, chapter) => acc + chapter.chapterContent.length,
-                          0
-                        ) || 0}
                       </td>
                     </tr>
                   ))}

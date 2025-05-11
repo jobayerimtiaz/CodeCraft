@@ -10,11 +10,13 @@ import Player from "../pages/student/Player";
 import MyCourses from "../pages/Instructor/MyCourses";
 import StudentsEnrolled from "../pages/Instructor/StudentsEnrolled";
 import Payment from "../pages/student/Payment";
+import LearnMorePage from "../pages/student/LearnMore";
+import ErrorPage from "../pages/student/ErrorPage";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    errorElement: <h2>Error routes</h2>,
+    errorElement: <ErrorPage></ErrorPage>,
     element: <Home></Home>,
     children: [
       {
@@ -38,12 +40,16 @@ const router = createBrowserRouter([
         element: <CourseDetails></CourseDetails>,
       },
       {
-        path: "player/:CourseId",
+        path: "player/:courseId",
         element: <Player></Player>,
       },
       {
         path: "payment",
         element: <Payment></Payment>,
+      },
+      {
+        path: "learn-more",
+        element: <LearnMorePage></LearnMorePage>,
       },
     ],
   },

@@ -6,7 +6,7 @@ import { FaRegPlayCircle, FaCheckCircle } from "react-icons/fa";
 import { MdOutlineLock, MdOutlineStar, MdStarOutline } from "react-icons/md";
 import { AiOutlineClockCircle, AiOutlineShoppingCart } from "react-icons/ai";
 import { BsCameraVideo, BsBookmark, BsBookmarkFill } from "react-icons/bs";
-import { RiMoneyDollarCircleLine } from "react-icons/ri";
+
 import { toast } from "react-toastify";
 import AuthContext from "../../context/AuthContext/AuthContext";
 import Swal from "sweetalert2";

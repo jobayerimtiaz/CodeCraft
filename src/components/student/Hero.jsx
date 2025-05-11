@@ -1,5 +1,6 @@
 import React from "react";
 import Search from "./Search";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
@@ -21,12 +22,18 @@ const Hero = () => {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <button className="btn btn-primary bg-blue-500 hover:bg-blue-600 border-none text-white px-8 py-3">
+            <Link
+              to="/course-list"
+              className="btn btn-primary bg-blue-500 hover:bg-blue-600 border-none text-white px-8 py-3"
+            >
               Browse Courses
-            </button>
-            <button className="btn btn-outline border-white hover:bg-white hover:text-[#202E3B] text-white px-8 py-3">
+            </Link>
+            <Link
+              to="/learn-more"
+              className="btn btn-outline border-white hover:bg-white hover:text-[#202E3B] text-white px-8 py-3"
+            >
               Learn More
-            </button>
+            </Link>
           </div>
           <div className="mt-8">
             <Search></Search>

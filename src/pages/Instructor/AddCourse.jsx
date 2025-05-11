@@ -130,7 +130,7 @@ const AddCourse = () => {
     try {
       // Replace with your backend API endpoint
       const response = await axios.post(
-        "http://localhost:5000/courses",
+        "https://learnglove-server.vercel.app/courses",
         courseData
       );
 

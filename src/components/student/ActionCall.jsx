@@ -1,5 +1,6 @@
 import React from "react";
 import { FaArrowRight, FaPlayCircle } from "react-icons/fa";
+import { Link } from "react-router-dom";
 const ActionCall = () => {
   return (
     <section className="bg-[#202E3B] text-white py-16 md:py-24 lg:py-32">
@@ -20,9 +21,12 @@ const ActionCall = () => {
           {/* Buttons */}
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             {/* Primary Button - Get Started */}
-            <button className="btn btn-primary bg-blue-500 hover:bg-blue-600 border-none text-white px-8 py-3 flex items-center justify-center">
+            <Link
+              to="/course-list"
+              className="btn btn-primary bg-blue-500 hover:bg-blue-600 border-none text-white px-8 py-3 flex items-center justify-center"
+            >
               Get Started <FaArrowRight className="ml-2" />
-            </button>
+            </Link>
 
             {/* Secondary Button - Learn More */}
             <button className="btn btn-outline border-white hover:bg-white hover:text-[#202E3B] text-white px-8 py-3 flex items-center justify-center">

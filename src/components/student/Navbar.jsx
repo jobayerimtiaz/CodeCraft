@@ -15,6 +15,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { openSignIn } = useClerk();
   const { user } = useUser();
+
   return (
     <nav className="bg-[#202E3B] text-white shadow-lg">
       <div className="container mx-auto px-4 py-3">

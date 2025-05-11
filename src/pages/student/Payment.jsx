@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-
+import { useUser } from "@clerk/clerk-react";
 const MySwal = withReactContent(Swal);
 
 const PaymentPage = () => {
@@ -14,7 +14,7 @@ const PaymentPage = () => {
   const [cvc, setCvc] = useState("");
   const [name, setName] = useState("");
   const [processing, setProcessing] = useState(false);
-
+  const { user } = useUser();
   if (!state?.course) {
     navigate("/courses");
     return null;
@@ -49,15 +49,16 @@ const PaymentPage = () => {
       const enrollmentData = {
         courseId: course._id,
         courseTitle: course.courseTitle,
+        courseThumbnail: course.courseThumbnail,
+        courseInstructor: course.educator,
         amountPaid: discountedPrice || course.coursePrice,
         paymentDate: new Date().toISOString(),
-        status: "completed",
-        userName: name, // Add the name on the card as the user
+        userName: user.fullName, // Add the name on the card as the user // Add the email of the user
       };
 
       // API call to save enrollment to the database
       const response = await axios.post(
-        "http://localhost:5000/enrollments",
+        "https://learnglove-server.vercel.app/enrollments",
         enrollmentData
       );
 
@@ -80,7 +81,7 @@ const PaymentPage = () => {
           if (result.isConfirmed) {
             navigate(`/player/${course._id}`);
           } else {
-            navigate("/courses");
+            navigate("/course-list");
           }
         });
       } else {
