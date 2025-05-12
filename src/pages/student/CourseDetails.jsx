@@ -27,6 +27,11 @@ const CourseDetails = () => {
     calculateNoOfLectures,
   } = useContext(AuthContext);
   const { user } = useUser();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const fetchCourseData = async () => {
     const findCourse = allCourses.find((course) => course._id === id);
     setCourseData(findCourse);

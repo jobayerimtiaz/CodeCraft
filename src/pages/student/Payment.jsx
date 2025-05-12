@@ -53,7 +53,7 @@ const PaymentPage = () => {
         courseInstructor: course.educator,
         amountPaid: discountedPrice || course.coursePrice,
         paymentDate: new Date().toISOString(),
-        userName: user.fullName, // Add the name on the card as the user // Add the email of the user
+        userName: user.fullName,
       };
 
       // API call to save enrollment to the database
@@ -62,9 +62,7 @@ const PaymentPage = () => {
         enrollmentData
       );
 
-      console.log("Response:", response);
       if (response.status >= 200 && response.status < 300) {
-        // Show success message
         await MySwal.fire({
           icon: "success",
           title: "Payment Successful!",
@@ -100,14 +98,19 @@ const PaymentPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6">
-        <h1 className="text-2xl font-bold text-center mb-6">
+    <div
+      className="min-h-screen py-12 px-4 sm:px-6 lg:px-8"
+      style={{ backgroundColor: "#202E3B" }}
+    >
+      <div className="max-w-md mx-auto bg-gray-800 rounded-xl shadow-md overflow-hidden p-6">
+        <h1 className="text-2xl font-bold text-center mb-6 text-white">
           Complete Your Payment
         </h1>
 
         <div className="mb-6">
-          <h2 className="text-lg font-semibold mb-2">Order Summary</h2>
+          <h2 className="text-lg font-semibold mb-2 text-gray-300">
+            Order Summary
+          </h2>
           <div className="flex items-center gap-4 mb-4">
             <img
               src={course.courseThumbnail}
@@ -115,16 +118,20 @@ const PaymentPage = () => {
               className="w-16 h-16 object-cover rounded-lg"
             />
             <div>
-              <h3 className="font-medium">{course.courseTitle}</h3>
+              <h3 className="font-medium text-white">{course.courseTitle}</h3>
               {discountedPrice ? (
                 <div>
-                  <span className="text-lg font-bold">${discountedPrice}</span>
-                  <span className="ml-2 line-through text-gray-500">
+                  <span className="text-lg font-bold text-emerald-400">
+                    ${discountedPrice}
+                  </span>
+                  <span className="ml-2 line-through text-gray-400">
                     ${course.coursePrice}
                   </span>
                 </div>
               ) : (
-                <span className="text-lg font-bold">${course.coursePrice}</span>
+                <span className="text-lg font-bold text-emerald-400">
+                  ${course.coursePrice}
+                </span>
               )}
             </div>
           </div>
@@ -132,7 +139,7 @@ const PaymentPage = () => {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-300 mb-1">
               Card Number
             </label>
             <input
@@ -142,14 +149,14 @@ const PaymentPage = () => {
                 setCardNumber(e.target.value.replace(/\D/g, "").slice(0, 16))
               }
               placeholder="4242 4242 4242 4242"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-3 py-2 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-gray-700 text-white"
               required
             />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-300 mb-1">
                 Expiry Date
               </label>
               <input
@@ -164,13 +171,13 @@ const PaymentPage = () => {
                   }
                 }}
                 placeholder="MM/YY"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-3 py-2 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-gray-700 text-white"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-300 mb-1">
                 CVC
               </label>
               <input
@@ -180,14 +187,14 @@ const PaymentPage = () => {
                   setCvc(e.target.value.replace(/\D/g, "").slice(0, 4))
                 }
                 placeholder="123"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-3 py-2 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-gray-700 text-white"
                 required
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-300 mb-1">
               Name on Card
             </label>
             <input
@@ -195,7 +202,7 @@ const PaymentPage = () => {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="John Doe"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-3 py-2 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-gray-700 text-white"
               required
             />
           </div>
@@ -213,7 +220,7 @@ const PaymentPage = () => {
           </button>
         </form>
 
-        <div className="mt-6 text-center text-sm text-gray-500"></div>
+        <div className="mt-6 text-center text-sm text-gray-400"></div>
       </div>
     </div>
   );

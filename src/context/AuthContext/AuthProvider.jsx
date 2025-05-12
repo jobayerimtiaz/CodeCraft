@@ -3,10 +3,14 @@ import AuthContext from "./AuthContext";
 
 import humanizeDuration from "humanize-duration";
 import axios from "axios";
+import { useUser } from "@clerk/clerk-react";
+import Loading from "../../components/student/Loading";
 const AuthProvider = ({ children }) => {
   const [allCourses, setAllCourses] = useState([]);
   const [isEducator, setIsEducator] = useState([]);
   const [enrolledCourses, setEnrolledCourses] = useState([]);
+  const { isLoaded } = useUser();
+  const [loading, setLoading] = useState(true);
 
   const fetchAllCourses = async () => {
     try {
@@ -18,6 +22,17 @@ const AuthProvider = ({ children }) => {
       console.error("Error fetching courses:", error);
     }
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (isLoaded) {
+        await fetchAllCourses();
+        await fetchUserEnrolledCourses();
+        setLoading(false); // Set loading to false after data is fetched
+      }
+    };
+    fetchData();
+  }, [isLoaded]);
 
   //calculate course chapter time
   const calculateChapterTime = (chapter) => {
@@ -76,6 +91,12 @@ const AuthProvider = ({ children }) => {
     fetchUserEnrolledCourses,
     enrolledCourses,
   };
+
+  if (loading) {
+    // Show a loading spinner or placeholder while data is being fetched
+    return <Loading></Loading>;
+  }
+
   return <AuthContext value={authInfo}>{children}</AuthContext>;
 };
 
